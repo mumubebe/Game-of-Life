@@ -32,13 +32,7 @@
     createApp({
       settings: settings,
       on: false,
-
-      increment() {
-        this.settings.fps++
-      },
-      decrement() {
-        this.settings.fps--
-      },
+      
       start() {
         this.on = true;
         gol.loop();
@@ -46,13 +40,7 @@
       stop() {
         this.on = false;
         gol.stop();
-      },
-      pxPlus() {
-        this.settings.px++
-      },
-      pxMinus() {
-        this.settings.px--
-      },
+      }
     }).mount()
   </script>
 
@@ -68,8 +56,8 @@
     <div>
       <label for="px">Pixel size: {{ settings.px }}</label>
       <input :disabled="on" type="range" min="2" max="50" v-model="settings.px" class="slider" id="px">
-      <button @click="pxPlus">+</button>
-      <button @click="pxMinus">-</button>
+      <button @click="settings.px++">+</button>
+      <button @click="settings.px--">-</button>
     </div>
   </div>
 
