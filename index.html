@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of life</title>
+  <!--<script src="https://unpkg.com/petite-vue" defer init></script> -->
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="1000" height="500"></canvas>
+  <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module'
+    var gol = new GameOfLife('canvas', 10);
+    var settings = {
+      set fps(value) {
+        gol.fps = value;
+      },
+      get fps() {
+        return gol.fps
+      },
+      set px(value) {
+        gol.px = value
+      },
+      get px() {
+        return gol.px
+      }
+    }
+    createApp({
+      settings: settings,
+      on: false,
+
+      increment() {
+        this.settings.fps++
+      },
+      decrement() {
+        this.settings.fps--
+      },
+      start() {
+        this.on = true;
+        gol.loop();
+      },
+      stop() {
+        this.on = false;
+        gol.stop();
+      },
+      pxPlus() {
+        this.settings.px++
+      },
+      pxMinus() {
+        this.settings.px--
+      },
+    }).mount()
+  </script>
+
+  <div v-scope>
+    <div>
+      <button @click="start" :disabled="on">start</button>
+      <button @click="stop" :disabled="!on">stop</button>
+    </div>
+    <div>
+      <label for="fps">Fps</label>
+      <input type="number" id="fps" name="fps" v-model="settings.fps" min="1" max="200" :disabled="on">
+    </div>
+    <div>
+      <label for="px">Pixel size: {{ settings.px }}</label>
+      <input :disabled="on" type="range" min="2" max="50" v-model="settings.px" class="slider" id="px">
+      <button @click="pxPlus">+</button>
+      <button @click="pxMinus">-</button>
+    </div>
+  </div>
+
+</body>
+
+</html>
