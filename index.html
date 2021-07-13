@@ -32,7 +32,7 @@
     createApp({
       settings: settings,
       on: false,
-      
+
       start() {
         this.on = true;
         gol.loop();
@@ -43,7 +43,7 @@
       }
     }).mount()
   </script>
-
+  <i>(Draw cells on cavas by clicking)</i>
   <div v-scope>
     <div>
       <button @click="start" :disabled="on">start</button>
@@ -56,8 +56,8 @@
     <div>
       <label for="px">Pixel size: {{ settings.px }}</label>
       <input :disabled="on" type="range" min="2" max="50" v-model="settings.px" class="slider" id="px">
+      <button @click="settings.px--">-</button> 
       <button @click="settings.px++">+</button>
-      <button @click="settings.px--">-</button>
     </div>
   </div>
 
