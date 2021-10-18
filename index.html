@@ -1,66 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game of life</title>
+    <!--<script src="https://unpkg.com/petite-vue" defer init></script> -->
+    <script src="main.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game of life</title>
-  <!--<script src="https://unpkg.com/petite-vue" defer init></script> -->
-  <script src="main.js"></script>
-</head>
-
-<body>
-  <canvas id="canvas" width="1000" height="500"></canvas>
-  <script type="module">
-    import { createApp } from 'https://unpkg.com/petite-vue?module'
-    var gol = new GameOfLife('canvas', 10);
-    var settings = {
-      set fps(value) {
-        gol.fps = value;
-      },
-      get fps() {
-        return gol.fps
-      },
-      set px(value) {
-        gol.px = value
-      },
-      get px() {
-        return gol.px
+  <body>
+    <canvas id="canvas" width="1000" height="500"></canvas>
+    <script type="module">
+      import { createApp } from 'https://unpkg.com/petite-vue?module'
+      var gol = new GameOfLife('canvas', 2);
+      var settings = { // ref() is not supported in petite-vue
+        set fps(value) {
+          gol.fps = value;
+        },
+        get fps() {
+          return gol.fps
+        },
+        set px(value) {
+          gol.px = value
+        },
+        get px() {
+          return gol.px
+        }
       }
-    }
-    createApp({
-      settings: settings,
-      on: false,
+      createApp({
+        settings: settings,
+        on: false,
 
-      start() {
-        this.on = true;
-        gol.loop();
-      },
-      stop() {
-        this.on = false;
-        gol.stop();
-      }
-    }).mount()
-  </script>
-  <i>(Draw cells on cavas by clicking)</i>
-  <div v-scope>
-    <div>
-      <button @click="start" :disabled="on">start</button>
-      <button @click="stop" :disabled="!on">stop</button>
+        start() {
+          this.on = true;
+          gol.loop();
+        },
+        stop() {
+          this.on = false;
+          gol.stop();
+        },
+        clear() {
+          this.stop();
+          gol.clear();
+        },
+        random() {
+          this.stop();
+          gol.generateRandom();
+        }
+      }).mount()
+    </script>
+    <i>(Draw cells on cavas by clicking)</i>
+    <div v-scope>
+      <div>
+        <button @click="start" :disabled="on">start</button>
+        <button @click="stop" :disabled="!on">stop</button>
+        <button @click="clear">clear</button>
+        <button @click="random">random</button>
+      </div>
+      <div>
+        <label for="fps">Fps</label>
+        <input
+          type="number"
+          id="fps"
+          name="fps"
+          v-model="settings.fps"
+          min="1"
+          max="200"
+          :disabled="on"
+        />
+      </div>
+      <div>
+        <label for="px">Pixel size: {{ settings.px }}</label>
+        <input
+          :disabled="on"
+          type="range"
+          min="2"
+          max="50"
+          v-model="settings.px"
+          class="slider"
+          id="px"
+        />
+        <button @click="settings.px--">-</button>
+        <button @click="settings.px++">+</button>
+      </div>
     </div>
-    <div>
-      <label for="fps">Fps</label>
-      <input type="number" id="fps" name="fps" v-model="settings.fps" min="1" max="200" :disabled="on">
-    </div>
-    <div>
-      <label for="px">Pixel size: {{ settings.px }}</label>
-      <input :disabled="on" type="range" min="2" max="50" v-model="settings.px" class="slider" id="px">
-      <button @click="settings.px--">-</button> 
-      <button @click="settings.px++">+</button>
-    </div>
-  </div>
-
-</body>
-
+  </body>
 </html>

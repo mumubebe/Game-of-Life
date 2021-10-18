@@ -18,7 +18,6 @@ class GameOfLife {
     this.width = Math.floor(this.canvas.width / this._px) - 1;
     this.height = Math.floor(this.canvas.height / this._px) - 1;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.fillStyle = "grey";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.createCells();
@@ -45,6 +44,17 @@ class GameOfLife {
 
   get px() {
     return this._px;
+  }
+
+  generateRandom() {
+    this.clear();
+    this.cells.forEach(
+      (c) => (c.state = Math.random() > 0.7 ? states.ALIVE : states.DEAD)
+    );
+  }
+
+  clear() {
+    this.cells.forEach((c) => (c.state = states.DEAD));
   }
 
   createCells() {
